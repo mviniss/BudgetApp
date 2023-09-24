@@ -15,7 +15,7 @@ class AddBudgetCategoryViewController: UIViewController {
     
     lazy var nameTextField: UITextField = {
         let textfield = UITextField()
-        textfield.placeholder = "Budget name"
+        textfield.placeholder = "Nome da categoria do orçamento"
         textfield.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         textfield.leftViewMode = .always
         textfield.borderStyle = .roundedRect
@@ -24,7 +24,7 @@ class AddBudgetCategoryViewController: UIViewController {
     
     lazy var amountTextField: UITextField = {
         let textfield = UITextField()
-        textfield.placeholder = "Budget amount"
+        textfield.placeholder = "Valor do orçamento"
         textfield.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         textfield.leftViewMode = .always
         textfield.borderStyle = .roundedRect
@@ -36,7 +36,9 @@ class AddBudgetCategoryViewController: UIViewController {
         var config = UIButton.Configuration.bordered()
         let button = UIButton(configuration: config)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Save", for: .normal)
+        button.setTitle("Salvar", for: .normal)
+        button.tintColor = UIColor.white
+        button.backgroundColor = UIColor.purple
         return button
       
     }()
@@ -62,7 +64,8 @@ class AddBudgetCategoryViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         navigationController?.navigationBar.prefersLargeTitles = true
-        title = "Add Budget"
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.purple]
+        title = "Adicionar orçamento"
         setupUI()
     }
     
@@ -71,7 +74,7 @@ class AddBudgetCategoryViewController: UIViewController {
             return false
         }
         
-        return !name.isEmpty && !amount.isEmpty && amount.isNumeric && amount.isGreatorThan(0)
+        return !name.isEmpty && !amount.isEmpty && amount.isNumeric && amount.isGreaterThan(0)
     }
     
     private func saveBudgetCategory() {
@@ -88,7 +91,7 @@ class AddBudgetCategoryViewController: UIViewController {
             // dismiss the modal
             dismiss(animated: true)
         } catch {
-            errorMessageLabel.text = "Unable to save budget category."
+            errorMessageLabel.text = "Não é possível salvar a categoria do orçamento."
         }
         
     }
@@ -97,7 +100,7 @@ class AddBudgetCategoryViewController: UIViewController {
         if isFormValid {
             saveBudgetCategory()
         } else {
-            errorMessageLabel.text = "Unable to save budget. Budget name and amount is required."
+            errorMessageLabel.text = "Não é possível salvar o orçamento. Verifique se o nome e/ou o valor são válidos."
         }
     }
     
@@ -119,8 +122,8 @@ class AddBudgetCategoryViewController: UIViewController {
         stackView.addArrangedSubview(errorMessageLabel)
         
         // add constraints
-        nameTextField.widthAnchor.constraint(equalToConstant: 300).isActive = true
-        amountTextField.widthAnchor.constraint(equalToConstant: 300).isActive = true
+        nameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        amountTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         addBudgetButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         // add button click

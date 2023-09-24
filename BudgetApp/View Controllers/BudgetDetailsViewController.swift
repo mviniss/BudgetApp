@@ -17,7 +17,7 @@ class BudgetDetailViewController: UIViewController {
     
     lazy var nameTextField: UITextField = {
         let textfield = UITextField()
-        textfield.placeholder = "Transaction name"
+        textfield.placeholder = "Nome da transação"
         textfield.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         textfield.leftViewMode = .always
         textfield.borderStyle = .roundedRect
@@ -26,7 +26,7 @@ class BudgetDetailViewController: UIViewController {
     
     lazy var amountTextField: UITextField = {
         let textfield = UITextField()
-        textfield.placeholder = "Transaction amount"
+        textfield.placeholder = "Valor da transação"
         textfield.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         textfield.leftViewMode = .always
         textfield.borderStyle = .roundedRect
@@ -46,7 +46,9 @@ class BudgetDetailViewController: UIViewController {
         var config = UIButton.Configuration.bordered()
         let button = UIButton(configuration: config)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Save Transaction", for: .normal)
+        button.setTitle("Salvar transação", for: .normal)
+        button.tintColor =  UIColor.white
+        button.backgroundColor = UIColor.purple
         return button
       
     }()
@@ -56,12 +58,6 @@ class BudgetDetailViewController: UIViewController {
         label.textColor = UIColor.red
         label.text = ""
         label.numberOfLines = 0
-        return label
-    }()
-    
-    lazy var amountLabel: UILabel = {
-        let label = UILabel()
-        label.text = budgetCategory.amount.formatAsCurrency()
         return label
     }()
     
@@ -98,7 +94,7 @@ class BudgetDetailViewController: UIViewController {
         do {
             try fetchedResultsController.performFetch()
         } catch {
-            errorMessageLabel.text = "Unable to fetch transactions."
+            errorMessageLabel.text = "Não é possível exibir as transações."
         }
     }
     
@@ -117,7 +113,7 @@ class BudgetDetailViewController: UIViewController {
             return false
         }
         
-        return !name.isEmpty && !amount.isEmpty && amount.isNumeric && amount.isGreatorThan(0)
+        return !name.isEmpty && !amount.isEmpty && amount.isNumeric && amount.isGreaterThan(0)
     }
     
     private func deleteTransaction(_ transaction: Transaction) {
@@ -126,7 +122,7 @@ class BudgetDetailViewController: UIViewController {
         do {
             try persistentContainer.viewContext.save()
         } catch {
-            errorMessageLabel.text = "Unable to delete transaction"
+            errorMessageLabel.text = "Não é possível excluir a transação"
         }
         
     }
@@ -149,7 +145,7 @@ class BudgetDetailViewController: UIViewController {
             resetForm()
             tableView.reloadData()
         } catch {
-            errorMessageLabel.text = "Unable to save transaction."
+            errorMessageLabel.text = "Não é possível salvar a transação."
         }
         
     }
@@ -159,7 +155,7 @@ class BudgetDetailViewController: UIViewController {
         if isFormValid {
             saveTransaction()
         } else {
-            errorMessageLabel.text = "Make sure name and amount is valid."
+            errorMessageLabel.text = "Verifique se o nome e/ou o valor são válidos."
         }
         
     }
@@ -177,22 +173,19 @@ class BudgetDetailViewController: UIViewController {
         stackView.spacing = UIStackView.spacingUseSystem
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
-        
-        stackView.addArrangedSubview(amountLabel)
-        stackView.setCustomSpacing(50, after: amountLabel)
         stackView.addArrangedSubview(nameTextField)
         stackView.addArrangedSubview(amountTextField)
         stackView.addArrangedSubview(saveTransactionButton)
         stackView.addArrangedSubview(errorMessageLabel)
-        stackView.addArrangedSubview(transactionsTotalLabel)
+        //stackView.addArrangedSubview(transactionsTotalLabel)
         stackView.addArrangedSubview(tableView)
         
         view.addSubview(stackView)
         
         // add constraints
-        nameTextField.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        amountTextField.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        saveTransactionButton.centerXAnchor.constraint(equalTo: stackView.centerXAnchor).isActive = true
+        nameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        amountTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        saveTransactionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         saveTransactionButton.addTarget(self, action: #selector(saveTransactionButtonPressed), for: .touchUpInside)
         
         stackView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true

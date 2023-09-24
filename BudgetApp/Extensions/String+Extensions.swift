@@ -13,7 +13,7 @@ extension String {
         Double(self) != nil
     }
     
-    func isGreatorThan(_ value: Double) -> Bool {
+    func isGreaterThan(_ value: Double) -> Bool {
         
         guard self.isNumeric else {
             return false

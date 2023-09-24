@@ -7,6 +7,7 @@
 
 import UIKit
 import CoreData
+import SwiftUI
 
 class BudgetCategoriesTableViewController: UITableViewController {
 
@@ -49,10 +50,13 @@ class BudgetCategoriesTableViewController: UITableViewController {
     
     private func setupUI() {
         
-        let addBudgetCategoryButton = UIBarButtonItem(title: "Add Category", style: .done, target: self, action: #selector(showAddBudgetCategory))
+        let addBudgetCategoryButton = UIBarButtonItem(title: "➕" , style: .done, target: self, action: #selector(showAddBudgetCategory))
         self.navigationItem.rightBarButtonItem = addBudgetCategoryButton
         navigationController?.navigationBar.prefersLargeTitles = true
-        title = "Budget"
+        
+        // Set the title in purple
+        self.navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.purple]
+        title = "Orçamento"
     }
     
     // UITableViewDataSource delegate functions
@@ -74,7 +78,7 @@ class BudgetCategoriesTableViewController: UITableViewController {
         do {
             try persistentContainer.viewContext.save()
         } catch {
-           showAlert(title: "Error", message: "Unable to save budget category.")
+           showAlert(title: "Error", message: "Não é possível salvar a categoria do orçamento.")
         }
     }
     
